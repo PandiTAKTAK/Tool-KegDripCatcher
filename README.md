@@ -62,9 +62,11 @@ The script produces a design like the following.
 
 ![3D render](./assets/initial_render.png)
 
-!>The steps in the angular repeat are caused by a low facet number, defined by private parameter `$fn`, increase this to something more suitable, like 360.
+> [!IMPORTANT]
+> The steps in the angular repeat are caused by a low facet number, defined by private parameter `$fn`, increase this to something more suitable, like 360.
 
-?>Consider using `$fn = $preview ? 60 : 360;` in the future [as per docs](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features).
+> [!TIP]
+>Consider using `$fn = $preview ? 60 : 360;` in the future [as per docs](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Other_Language_Features).
 
 ---
 
