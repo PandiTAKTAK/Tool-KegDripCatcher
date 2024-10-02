@@ -59,12 +59,12 @@ module KegDripCatcherBody()
 {
 /*
 
- 2  |IR-Th..OR +Th|  3
+ 2  |IR-Th..OR+Th|  3
  ┌──────────────────┐
  │                  │
  │   ┌──────────┐   │
  │   │9        8│   │
- │   │ IR    OR │   │GripH
+ │   │ IR    OR │   │TrH+GrTh
  │   │          │   │
  │   │          │   │4                  5
  └───┘          │   └──────────────────┐
@@ -88,27 +88,27 @@ module KegDripCatcherBody()
    polygon
    ([
       // Grip
-      [KegIR - GripThickness, (TrayHeight + GripThickness) - EdgeChamfer],
-      [(KegIR - GripThickness) + EdgeChamfer, TrayHeight + GripThickness],
-      [(KegOR + TrayThickness) - EdgeChamfer, TrayHeight + GripThickness],
-      [KegOR + TrayThickness , (TrayHeight + GripThickness) - EdgeChamfer],
-      [KegOR + TrayThickness, SpongeThickness],
+      [KegIR - GripThickness, (TrayHeight + GripThickness) - EdgeChamfer],    // 1 .. 2
+      [(KegIR - GripThickness) + EdgeChamfer, TrayHeight + GripThickness],    // Chamf on 2
+      [(KegOR + TrayThickness) - EdgeChamfer, TrayHeight + GripThickness],    // 2 .. 3
+      [KegOR + TrayThickness , (TrayHeight + GripThickness) - EdgeChamfer],   // Chamf 3
+      [KegOR + TrayThickness, SpongeThickness],                               // 3 .. 4
       // Spongeholder
-      [TrayOR - EdgeChamfer, SpongeThickness],
-      [TrayOR, SpongeThickness - EdgeChamfer],
-      [TrayOR, EdgeChamfer],
-      [TrayOR - EdgeChamfer, 0],
-      [KegOR + EdgeChamfer, 0],
-      [KegOR, EdgeChamfer],
+      [TrayOR - EdgeChamfer, SpongeThickness],                                // 4 .. 5
+      [TrayOR, SpongeThickness - EdgeChamfer],                                // Chamf on 5
+      [TrayOR, EdgeChamfer],                                                  // 5 .. 6
+      [TrayOR - EdgeChamfer, 0],                                              // Chamf on 6
+      [KegOR + EdgeChamfer, 0],                                               // 6 .. 7
+      [KegOR, EdgeChamfer],                                                   // Chamf on 7
       // Grip + Spongeholder
-      [KegOR, TrayHeight - EdgeChamfer],
-      [KegOR - EdgeChamfer, TrayHeight],
-      [KegIR + EdgeChamfer, TrayHeight],
-      [KegIR, TrayHeight - EdgeChamfer],
-      [KegIR, HookGripHeight + EdgeChamfer],
-      [KegIR - EdgeChamfer, HookGripHeight],
-      [(KegIR - GripThickness) + EdgeChamfer, HookGripHeight],
-      [KegIR - GripThickness, HookGripHeight + EdgeChamfer]
+      [KegOR, TrayHeight - EdgeChamfer],                                      // 7 ..8
+      [KegOR - EdgeChamfer, TrayHeight],                                      // Chamf on 8
+      [KegIR + EdgeChamfer, TrayHeight],                                      // 8 .. 9
+      [KegIR, TrayHeight - EdgeChamfer],                                      // Chamf on 9
+      [KegIR, HookGripHeight + EdgeChamfer],                                  // 9 .. 10
+      [KegIR - EdgeChamfer, HookGripHeight],                                  // Chamf on 10
+      [(KegIR - GripThickness) + EdgeChamfer, HookGripHeight],                // 10 .. 1
+      [KegIR - GripThickness, HookGripHeight + EdgeChamfer]                   // Chamf on 1
    ]);
 }
 
