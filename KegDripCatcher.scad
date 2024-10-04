@@ -1,3 +1,7 @@
+/* [Model to Generate] */
+// Select which model to generate
+Model="DT"; // [DT:Drip Catcher, CO:CO2 Holder]
+
 /* [Keg Parameters] */
 // Keg - Outer Diameter
 KegOD = 205;
@@ -18,6 +22,10 @@ SpongeDepth = 65;
 // Sponge - Thickness
 SpongeThickness = 30;
 
+/* [CO2] */
+// CO2 - Diameter
+GasDiameter = 65;
+
 /* [Grip Parameters] */
 // Grip - Height
 GripHeight = 20;
@@ -32,7 +40,7 @@ EdgeChamfer = 2;
 
 RenderCludge = 0.01; // Cludge to tidy up rendering interface
 Pi = 3.14;
-$fn = 60;
+$fn = 360;
 
 // ###########################################
 
@@ -54,9 +62,6 @@ SpongeHolderOutside = TrayOR - TrayThickness;
 
 // ###########################################
 
-// Outline of drip catcher
-module KegDripCatcherBody()
-{
 /*
 
  2  |IR-Th..OR+Th|  3
@@ -85,6 +90,8 @@ module KegDripCatcherBody()
    
 */
 
+module Grip()
+{
    polygon
    ([
       // Grip
@@ -92,12 +99,8 @@ module KegDripCatcherBody()
       [(KegIR - GripThickness) + EdgeChamfer, TrayHeight + GripThickness],    // Chamf on 2
       [(KegOR + TrayThickness) - EdgeChamfer, TrayHeight + GripThickness],    // 2 .. 3
       [KegOR + TrayThickness , (TrayHeight + GripThickness) - EdgeChamfer],   // Chamf 3
-      [KegOR + TrayThickness, SpongeThickness],                               // 3 .. 4
-      // Spongeholder
-      [TrayOR - EdgeChamfer, SpongeThickness],                                // 4 .. 5
-      [TrayOR, SpongeThickness - EdgeChamfer],                                // Chamf on 5
-      [TrayOR, EdgeChamfer],                                                  // 5 .. 6
-      [TrayOR - EdgeChamfer, 0],                                              // Chamf on 6
+      [KegOR + TrayThickness, 0],                                             // 3 .. 4
+
       [KegOR + EdgeChamfer, 0],                                               // 6 .. 7
       [KegOR, EdgeChamfer],                                                   // Chamf on 7
       // Grip + Spongeholder
@@ -110,6 +113,32 @@ module KegDripCatcherBody()
       [(KegIR - GripThickness) + EdgeChamfer, HookGripHeight],                // 10 .. 1
       [KegIR - GripThickness, HookGripHeight + EdgeChamfer]                   // Chamf on 1
    ]);
+}
+
+module Tray()
+{
+   polygon
+   ([
+      [KegOR, SpongeThickness],                                               // 4
+      // Spongeholder
+      [TrayOR - EdgeChamfer, SpongeThickness],                                // 4 .. 5
+      [TrayOR, SpongeThickness - EdgeChamfer],                                // Chamf on 5
+      [TrayOR, EdgeChamfer],                                                  // 5 .. 6
+      [TrayOR - EdgeChamfer, 0],                                              // Chamf on 6
+      [KegOR + EdgeChamfer, 0],                                               // 6 .. 7
+      [KegOR, EdgeChamfer],                                                   // Chamf on 7
+      // Grip + Spongeholder
+      [KegOR, TrayHeight - EdgeChamfer],                                      // 7 ..8
+   ]);
+}
+
+// Outline of drip catcher
+module KegDripCatcherBody()
+{
+
+Tray();
+Grip();
+
 }
 
 // Outline of sponge holder
@@ -155,6 +184,23 @@ module KegDripCatcher()
    }
 }
 
+module COHolder()
+{
+   // Angular step repetition out of 360deg
+   AngularRepeat = (360 * GasDiameter) / (Pi * KegOR * 2);
+   
+   difference()
+   {
+      // Tray
+      rotate_extrude(angle=AngularRepeat) KegDripCatcherBody();
+
+      #CreateText("ZETA", size = 9, position = [KegOR - (KegRimThickness / 2), 10, (TrayHeight + GripThickness) - 3 + RenderCludge]);
+   }
+}
+
 // ###########################################
 
-KegDripCatcher();
+if( Model == "DT" )
+   KegDripCatcher();
+else if( Model == "CO" )
+   COHolder();
