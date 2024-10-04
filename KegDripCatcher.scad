@@ -1,6 +1,6 @@
 /* [Model to Generate] */
 // Select which model to generate
-Model="DT"; // [DT:Drip Catcher, CO:CO2 Holder]
+Model="DT"; // [DT:Drip Catcher, CO2:CO2 Holder]
 
 /* [Keg Parameters] */
 // Keg - Outer Diameter
@@ -95,23 +95,22 @@ module Grip()
    polygon
    ([
       // Grip
-      [KegIR - GripThickness, (TrayHeight + GripThickness) - EdgeChamfer],    // 1 .. 2
-      [(KegIR - GripThickness) + EdgeChamfer, TrayHeight + GripThickness],    // Chamf on 2
-      [(KegOR + TrayThickness) - EdgeChamfer, TrayHeight + GripThickness],    // 2 .. 3
-      [KegOR + TrayThickness , (TrayHeight + GripThickness) - EdgeChamfer],   // Chamf 3
-      [KegOR + TrayThickness, 0],                                             // 3 .. 4
+      [KegIR - GripThickness, (TrayHeight + GripThickness) - EdgeChamfer],
+      [(KegIR - GripThickness) + EdgeChamfer, TrayHeight + GripThickness],
+      [(KegOR + TrayThickness) - EdgeChamfer, TrayHeight + GripThickness],
+      [KegOR + TrayThickness , (TrayHeight + GripThickness) - EdgeChamfer],
+      [KegOR + TrayThickness, 0],
+      [KegOR + EdgeChamfer, 0],
+      [KegOR, EdgeChamfer],
 
-      [KegOR + EdgeChamfer, 0],                                               // 6 .. 7
-      [KegOR, EdgeChamfer],                                                   // Chamf on 7
-      // Grip + Spongeholder
-      [KegOR, TrayHeight - EdgeChamfer],                                      // 7 ..8
-      [KegOR - EdgeChamfer, TrayHeight],                                      // Chamf on 8
-      [KegIR + EdgeChamfer, TrayHeight],                                      // 8 .. 9
-      [KegIR, TrayHeight - EdgeChamfer],                                      // Chamf on 9
-      [KegIR, HookGripHeight + EdgeChamfer],                                  // 9 .. 10
-      [KegIR - EdgeChamfer, HookGripHeight],                                  // Chamf on 10
-      [(KegIR - GripThickness) + EdgeChamfer, HookGripHeight],                // 10 .. 1
-      [KegIR - GripThickness, HookGripHeight + EdgeChamfer]                   // Chamf on 1
+      [KegOR, TrayHeight - EdgeChamfer],
+      [KegOR - EdgeChamfer, TrayHeight],
+      [KegIR + EdgeChamfer, TrayHeight],
+      [KegIR, TrayHeight - EdgeChamfer],
+      [KegIR, HookGripHeight + EdgeChamfer],
+      [KegIR - EdgeChamfer, HookGripHeight],
+      [(KegIR - GripThickness) + EdgeChamfer, HookGripHeight],
+      [KegIR - GripThickness, HookGripHeight + EdgeChamfer]
    ]);
 }
 
@@ -119,26 +118,30 @@ module Tray()
 {
    polygon
    ([
-      [KegOR, SpongeThickness],                                               // 4
-      // Spongeholder
-      [TrayOR - EdgeChamfer, SpongeThickness],                                // 4 .. 5
-      [TrayOR, SpongeThickness - EdgeChamfer],                                // Chamf on 5
-      [TrayOR, EdgeChamfer],                                                  // 5 .. 6
-      [TrayOR - EdgeChamfer, 0],                                              // Chamf on 6
-      [KegOR + EdgeChamfer, 0],                                               // 6 .. 7
-      [KegOR, EdgeChamfer],                                                   // Chamf on 7
-      // Grip + Spongeholder
-      [KegOR, TrayHeight - EdgeChamfer],                                      // 7 ..8
+      [KegOR, SpongeThickness],
+      [TrayOR - EdgeChamfer, SpongeThickness],
+      [TrayOR, SpongeThickness - EdgeChamfer],
+      [TrayOR, EdgeChamfer],
+      [TrayOR - EdgeChamfer, 0],
+      [KegOR + EdgeChamfer, 0],
+      [KegOR, EdgeChamfer],
+      [KegOR, TrayHeight - EdgeChamfer],
    ]);
 }
+
+module CreateText(textString, size, position) {
+    translate(position)
+        linear_extrude(height = 3)
+            text(textString, font = "Leelawadee UI:style=Bold", size = size, valign = "center", halign = "center");
+}
+
+// ###########################################
 
 // Outline of drip catcher
 module KegDripCatcherBody()
 {
-
-Tray();
-Grip();
-
+   Tray();
+   Grip();
 }
 
 // Outline of sponge holder
@@ -151,12 +154,6 @@ module SpongeHolder()
       [SpongeHolderOutside, TrayThickness],
       [SpongeHolderInside, TrayThickness]
    ]);
-}
-
-module CreateText(textString, size, position) {
-    translate(position)
-        linear_extrude(height = 3)
-            text(textString, font = "Leelawadee UI:style=Bold", size = size, valign = "center", halign = "center");
 }
 
 module KegDripCatcher()
@@ -184,7 +181,16 @@ module KegDripCatcher()
    }
 }
 
-module COHolder()
+// ###########################################
+
+// Outline of CO2 Holder
+module CO2HolderBody()
+{
+   //Tray();
+   Grip();
+}
+
+module CO2Holder()
 {
    // Angular step repetition out of 360deg
    AngularRepeat = (360 * GasDiameter) / (Pi * KegOR * 2);
@@ -192,7 +198,7 @@ module COHolder()
    difference()
    {
       // Tray
-      rotate_extrude(angle=AngularRepeat) KegDripCatcherBody();
+      rotate_extrude(angle=AngularRepeat) CO2HolderBody();
 
       #CreateText("ZETA", size = 9, position = [KegOR - (KegRimThickness / 2), 10, (TrayHeight + GripThickness) - 3 + RenderCludge]);
    }
@@ -202,5 +208,5 @@ module COHolder()
 
 if( Model == "DT" )
    KegDripCatcher();
-else if( Model == "CO" )
-   COHolder();
+else if( Model == "CO2" )
+   CO2Holder();
