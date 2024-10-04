@@ -10,9 +10,11 @@ KegOD = 205;
 // Keg - Rim Thickness
 KegRimThickness = 25;
 
-/* [Tray Parameters] */
-// Tray - Height
-TrayHeight = 50;
+/* [Grip Parameters] */
+// Grip - Height
+GripHeight = 20;
+// Grip - AttachmentHeight
+AttachmentHeight = 50;
 
 /* [Sponge] */
 // Sponge - Width
@@ -25,10 +27,6 @@ SpongeThickness = 30;
 /* [CO2] */
 // CO2 - Diameter
 GasDiameter = 65;
-
-/* [Grip Parameters] */
-// Grip - Height
-GripHeight = 20;
 
 // ###########################################
 
@@ -49,7 +47,7 @@ KegOR = KegOD / 2;
 KegIR = KegOR - KegRimThickness;
 
 // Grip - Height
-HookGripHeight = TrayHeight - GripHeight;
+HookGripHeight = AttachmentHeight - GripHeight;
 
 // Tray - Outer R
 TrayOR = KegOR + SpongeDepth;
@@ -93,18 +91,18 @@ module Grip()
    polygon
    ([
       // Grip
-      [KegIR - MaterialThickness, (TrayHeight + MaterialThickness) - EdgeChamfer],
-      [(KegIR - MaterialThickness) + EdgeChamfer, TrayHeight + MaterialThickness],
-      [(KegOR + MaterialThickness) - EdgeChamfer, TrayHeight + MaterialThickness],
-      [KegOR + MaterialThickness , (TrayHeight + MaterialThickness) - EdgeChamfer],
+      [KegIR - MaterialThickness, (AttachmentHeight + MaterialThickness) - EdgeChamfer],
+      [(KegIR - MaterialThickness) + EdgeChamfer, AttachmentHeight + MaterialThickness],
+      [(KegOR + MaterialThickness) - EdgeChamfer, AttachmentHeight + MaterialThickness],
+      [KegOR + MaterialThickness , (AttachmentHeight + MaterialThickness) - EdgeChamfer],
       [KegOR + MaterialThickness, 0],
       [KegOR + EdgeChamfer, 0],
       [KegOR, EdgeChamfer],
 
-      [KegOR, TrayHeight - EdgeChamfer],
-      [KegOR - EdgeChamfer, TrayHeight],
-      [KegIR + EdgeChamfer, TrayHeight],
-      [KegIR, TrayHeight - EdgeChamfer],
+      [KegOR, AttachmentHeight - EdgeChamfer],
+      [KegOR - EdgeChamfer, AttachmentHeight],
+      [KegIR + EdgeChamfer, AttachmentHeight],
+      [KegIR, AttachmentHeight - EdgeChamfer],
       [KegIR, HookGripHeight + EdgeChamfer],
       [KegIR - EdgeChamfer, HookGripHeight],
       [(KegIR - MaterialThickness) + EdgeChamfer, HookGripHeight],
@@ -123,7 +121,7 @@ module Tray()
       [TrayOR - EdgeChamfer, 0],
       [KegOR + EdgeChamfer, 0],
       [KegOR, EdgeChamfer],
-      [KegOR, TrayHeight - EdgeChamfer],
+      [KegOR, AttachmentHeight - EdgeChamfer],
    ]);
 }
 
@@ -175,7 +173,7 @@ module KegDripCatcher()
 
       }
       
-      #CreateText("ZETA", size = 9, position = [KegOR - (KegRimThickness / 2), 10, (TrayHeight + MaterialThickness) - 3 + RenderCludge]);
+      #CreateText("ZETA", size = 9, position = [KegOR - (KegRimThickness / 2), 10, (AttachmentHeight + MaterialThickness) - 3 + RenderCludge]);
    }
 }
 
@@ -198,7 +196,7 @@ module CO2Holder()
       // Tray
       rotate_extrude(angle=AngularRepeat) CO2HolderBody();
 
-      #CreateText("ZETA", size = 9, position = [KegOR - (KegRimThickness / 2), 10, (TrayHeight + MaterialThickness) - 3 + RenderCludge]);
+      #CreateText("ZETA", size = 9, position = [KegOR - (KegRimThickness / 2), 10, (AttachmentHeight + MaterialThickness) - 3 + RenderCludge]);
    }
 }
 
