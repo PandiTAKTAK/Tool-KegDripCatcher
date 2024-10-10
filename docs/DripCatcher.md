@@ -67,7 +67,7 @@ The script produces a design like the following.
 
 ![3D render](./assets/initial_render.png)
 
-> [!IMPORTANT]
+> [!ATTENTION]
 > The steps in the angular repeat are caused by a low facet number, defined by private parameter `$fn`, increase this to something more suitable, like 360.
 
 > [!TIP]
