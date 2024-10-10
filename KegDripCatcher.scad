@@ -4,7 +4,7 @@ Model="DT"; // [DT:Drip Catcher, CO2:CO2 Holder]
 // Material Thickness
 MaterialThickness = 10;
 // Chamfers
-EdgeChamfer = 5;
+EdgeChamfer = 3;
 
 /* [Keg Parameters] */
 // Keg - Outer Diameter
@@ -16,7 +16,7 @@ KegRimThickness = 25;
 // Grip - Height
 GripHeight = 20;
 // Grip - AttachmentHeight
-AttachmentHeight = 50;
+AttachmentHeight = 55;
 
 /* [Sponge] */
 // Sponge - Width
@@ -241,9 +241,9 @@ module CO2Holder()
             cube([RegulatorRestDiameter, RegulatorRestDiameter, AttachmentHeight + MaterialThickness], center = true);
          }
          
-         translate([0, RegulatorRestDiameter - RenderCludge, (AttachmentHeight/2) + MaterialThickness + 5])
+         translate([0, RegulatorRestDiameter - RenderCludge, (AttachmentHeight/2) + MaterialThickness + 3])
             // Cut for CO2 line
-            cube([20, RegulatorRestDiameter, AttachmentHeight], center = true);
+            cube([25, RegulatorRestDiameter, AttachmentHeight], center = true);
       }
    }
 }
